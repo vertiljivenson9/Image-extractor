@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR Tool - Text Extraction</title>
+    <title>Vertil Extract Frontend IMG</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@v5.0.0/dist/tesseract.min.js"></script>
     <style>
         /* Reset y tipografía */
@@ -15,59 +15,52 @@
         }
         
         body {
-            background-color: #f8f9fa;
-            color: #212529;
+            background-color: #f5f7fa;
+            color: #333;
             line-height: 1.5;
             min-height: 100vh;
-            padding: 20px;
         }
         
         /* Contenedor principal */
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background-color: #ffffff;
-            border-radius: 6px;
-            border: 1px solid #dee2e6;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 40px);
+            padding: 20px;
         }
         
-        /* Encabezado */
-        header {
-            background-color: #2c3e50;
+        /* Encabezado principal */
+        .main-header {
+            background-color: #1e3a5f;
             color: #ffffff;
-            padding: 18px 24px;
-            border-bottom: 1px solid #1a252f;
+            padding: 20px 30px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border-bottom: 4px solid #0d2b4e;
         }
         
-        h1 {
-            font-size: 1.5rem;
+        .main-title {
+            font-size: 1.8rem;
             font-weight: 600;
-            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
         }
         
-        .subtitle {
-            font-size: 0.875rem;
-            color: #adb5bd;
+        .app-subtitle {
+            font-size: 0.95rem;
+            color: #a0c1eb;
             font-weight: 400;
         }
         
         /* Layout principal */
         .main-content {
             display: flex;
-            flex: 1;
-            overflow: hidden;
+            gap: 25px;
+            height: calc(100vh - 180px);
         }
         
         /* Panel izquierdo */
         .control-panel {
-            width: 350px;
-            padding: 24px;
-            border-right: 1px solid #e9ecef;
-            background-color: #f8f9fa;
+            width: 380px;
             display: flex;
             flex-direction: column;
         }
@@ -77,61 +70,60 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            min-width: 0;
         }
         
         /* Secciones comunes */
         .panel-section {
-            margin-bottom: 24px;
+            background-color: #ffffff;
+            border: 1px solid #d0d7e2;
+            border-radius: 6px;
+            padding: 22px;
+            margin-bottom: 20px;
         }
         
         .section-title {
-            font-size: 0.875rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            color: #495057;
+            color: #1e3a5f;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8edf5;
         }
         
         /* Área de carga */
         .upload-area {
-            border: 2px dashed #ced4da;
+            border: 2px dashed #b8c4d9;
             border-radius: 4px;
-            padding: 32px 20px;
+            padding: 30px 20px;
             text-align: center;
-            background-color: #ffffff;
+            background-color: #f9fafc;
             transition: border-color 0.15s;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             cursor: pointer;
         }
         
         .upload-area:hover {
-            border-color: #6c757d;
+            border-color: #7a8fb8;
         }
         
         .upload-area.drag-over {
-            border-color: #2c3e50;
-            background-color: #f1f3f5;
-        }
-        
-        .upload-icon {
-            font-size: 2rem;
-            color: #6c757d;
-            margin-bottom: 12px;
+            border-color: #1e3a5f;
+            background-color: #edf2f9;
         }
         
         .upload-text {
-            font-size: 0.9375rem;
-            color: #495057;
+            font-size: 1rem;
+            color: #3a4a6b;
             margin-bottom: 8px;
+            font-weight: 500;
         }
         
         .upload-hint {
-            font-size: 0.8125rem;
-            color: #868e96;
+            font-size: 0.85rem;
+            color: #7a8fb8;
         }
         
         input[type="file"] {
@@ -140,30 +132,30 @@
         
         /* Controles */
         .control-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
         
         label {
             display: block;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             font-weight: 500;
-            color: #495057;
+            color: #3a4a6b;
             margin-bottom: 8px;
         }
         
         select, .preview-container {
             width: 100%;
             padding: 10px 12px;
-            border: 1px solid #ced4da;
+            border: 1px solid #b8c4d9;
             border-radius: 4px;
             background-color: #ffffff;
-            font-size: 0.9375rem;
-            color: #212529;
+            font-size: 0.95rem;
+            color: #333;
         }
         
         select:focus {
             outline: none;
-            border-color: #2c3e50;
+            border-color: #1e3a5f;
         }
         
         /* Botones */
@@ -178,45 +170,45 @@
             padding: 12px 16px;
             border: none;
             border-radius: 4px;
-            font-size: 0.9375rem;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             transition: background-color 0.15s;
         }
         
         .btn-primary {
-            background-color: #2c3e50;
+            background-color: #1e3a5f;
             color: #ffffff;
         }
         
         .btn-primary:hover:not(:disabled) {
-            background-color: #1a252f;
+            background-color: #0d2b4e;
         }
         
         .btn-primary:disabled {
-            background-color: #6c757d;
+            background-color: #7a8fb8;
             cursor: not-allowed;
             opacity: 0.7;
         }
         
         .btn-secondary {
-            background-color: #e9ecef;
-            color: #495057;
+            background-color: #e8edf5;
+            color: #3a4a6b;
         }
         
         .btn-secondary:hover {
-            background-color: #dee2e6;
+            background-color: #d0d7e2;
         }
         
         /* Vista previa */
         .preview-container {
-            height: 200px;
+            height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f8f9fa;
+            background-color: #f9fafc;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         #imagePreview {
@@ -226,16 +218,19 @@
         }
         
         .preview-placeholder {
-            color: #868e96;
-            font-size: 0.875rem;
+            color: #7a8fb8;
+            font-size: 0.9rem;
         }
         
         /* Resultados */
         .results-container {
+            background-color: #ffffff;
+            border: 1px solid #d0d7e2;
+            border-radius: 6px;
+            padding: 22px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 24px;
             overflow: hidden;
         }
         
@@ -243,84 +238,106 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         
         .results-title {
-            font-size: 1.125rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            color: #212529;
+            color: #1e3a5f;
+        }
+        
+        .results-actions {
+            display: flex;
+            gap: 10px;
         }
         
         .btn-success {
-            background-color: #28a745;
+            background-color: #2e7d32;
             color: #ffffff;
-            padding: 8px 16px;
-            font-size: 0.875rem;
+            padding: 9px 16px;
+            font-size: 0.9rem;
         }
         
         .btn-success:hover:not(:disabled) {
-            background-color: #218838;
+            background-color: #1b5e20;
         }
         
         .btn-success:disabled {
-            background-color: #94d3a2;
+            background-color: #7bb47e;
+            cursor: not-allowed;
+        }
+        
+        .btn-download {
+            background-color: #1565c0;
+            color: #ffffff;
+            padding: 9px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-download:hover:not(:disabled) {
+            background-color: #0d47a1;
+        }
+        
+        .btn-download:disabled {
+            background-color: #6a9bd8;
             cursor: not-allowed;
         }
         
         #resultText {
             flex: 1;
-            padding: 16px;
-            border: 1px solid #ced4da;
+            padding: 18px;
+            border: 1px solid #b8c4d9;
             border-radius: 4px;
-            background-color: #f8f9fa;
+            background-color: #f9fafc;
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9375rem;
+            font-size: 0.95rem;
             line-height: 1.6;
             white-space: pre-wrap;
             overflow-y: auto;
-            color: #212529;
+            color: #333;
+            min-height: 300px;
         }
         
         /* Progreso */
         .progress-container {
-            margin-top: 20px;
             padding: 16px;
-            background-color: #e7f1ff;
+            background-color: #e3f2fd;
             border-radius: 4px;
-            border: 1px solid #cfe2ff;
+            border: 1px solid #bbdefb;
             display: none;
+            margin-top: 10px;
         }
         
         .progress-text {
-            font-size: 0.875rem;
-            color: #084298;
+            font-size: 0.9rem;
+            color: #0d47a1;
             margin-bottom: 8px;
             font-weight: 500;
         }
         
         .progress-bar {
             height: 6px;
-            background-color: #cfe2ff;
+            background-color: #bbdefb;
             border-radius: 3px;
             overflow: hidden;
         }
         
         .progress-fill {
             height: 100%;
-            background-color: #084298;
+            background-color: #1565c0;
             width: 0%;
             transition: width 0.3s ease;
         }
         
         /* Footer */
         footer {
-            padding: 16px 24px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            font-size: 0.8125rem;
-            color: #6c757d;
+            padding: 18px 0;
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #7a8fb8;
             text-align: center;
+            border-top: 1px solid #e8edf5;
         }
         
         /* Utilidades */
@@ -328,46 +345,68 @@
             display: none;
         }
         
+        .file-name {
+            font-size: 0.85rem;
+            color: #3a4a6b;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
         /* Scrollbar */
-        ::-webkit-scrollbar {
+        #resultText::-webkit-scrollbar {
             width: 8px;
         }
         
-        ::-webkit-scrollbar-track {
+        #resultText::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
         
-        ::-webkit-scrollbar-thumb {
+        #resultText::-webkit-scrollbar-thumb {
             background: #c1c1c1;
             border-radius: 4px;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
+        #resultText::-webkit-scrollbar-thumb:hover {
             background: #a8a8a8;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .control-panel {
+                width: 100%;
+            }
+            
+            .results-actions {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>OCR Text Extraction Tool</h1>
-            <div class="subtitle">Upload an image to extract text using client-side OCR processing</div>
+        <header class="main-header">
+            <div class="main-title">Vertil Extract Frontend IMG</div>
+            <div class="app-subtitle">Image text extraction tool using Tesseract.js OCR</div>
         </header>
         
         <div class="main-content">
             <div class="control-panel">
                 <div class="panel-section">
-                    <div class="section-title">Image Input</div>
+                    <div class="section-title">Image Upload</div>
                     <div class="upload-area" id="dropArea">
-                        <div class="upload-icon">📁</div>
-                        <div class="upload-text">Select or drag image file</div>
-                        <div class="upload-hint">Supported formats: JPG, PNG, BMP, TIFF</div>
+                        <div class="upload-text">Click to select or drag image file</div>
+                        <div class="upload-hint">Supports JPG, PNG, BMP, TIFF, WebP</div>
                     </div>
                     <input type="file" id="fileInput" accept="image/*">
+                    <div id="fileName" class="file-name"></div>
                 </div>
                 
                 <div class="panel-section">
-                    <div class="section-title">Preview</div>
+                    <div class="section-title">Image Preview</div>
                     <div class="preview-container">
                         <img id="imagePreview" alt="Image preview">
                         <div class="preview-placeholder" id="placeholderText">No image selected</div>
@@ -377,7 +416,7 @@
                 <div class="panel-section">
                     <div class="section-title">Recognition Settings</div>
                     <div class="control-group">
-                        <label for="languageSelect">Language</label>
+                        <label for="languageSelect">OCR Language</label>
                         <select id="languageSelect">
                             <option value="eng">English</option>
                             <option value="spa">Spanish</option>
@@ -385,24 +424,24 @@
                             <option value="deu">German</option>
                             <option value="por">Portuguese</option>
                             <option value="ita">Italian</option>
-                            <option value="chi_sim">Chinese Simplified</option>
+                            <option value="chi_sim">Chinese (Simplified)</option>
                             <option value="jpn">Japanese</option>
                             <option value="kor">Korean</option>
                             <option value="rus">Russian</option>
                             <option value="ara">Arabic</option>
                         </select>
                     </div>
-                </div>
-                
-                <div class="progress-container" id="progressContainer">
-                    <div class="progress-text" id="progressText">Initializing OCR engine...</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
+                    
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-text" id="progressText">Initializing OCR engine...</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="button-group">
-                    <button id="extractBtn" class="btn-primary" disabled>Extract Text</button>
+                    <button id="extractBtn" class="btn-primary" disabled>Extract Text from Image</button>
                     <button id="clearBtn" class="btn-secondary">Clear All</button>
                 </div>
             </div>
@@ -411,15 +450,18 @@
                 <div class="results-container">
                     <div class="results-header">
                         <div class="results-title">Extracted Text</div>
-                        <button id="copyBtn" class="btn-success" disabled>Copy to Clipboard</button>
+                        <div class="results-actions">
+                            <button id="copyBtn" class="btn-success" disabled>Copy to Clipboard</button>
+                            <button id="downloadBtn" class="btn-download" disabled>Download as TXT</button>
+                        </div>
                     </div>
-                    <div id="resultText">Extracted text will appear here...</div>
+                    <div id="resultText">Extracted text will appear here after processing the image.</div>
                 </div>
             </div>
         </div>
         
         <footer>
-            <div>Powered by Tesseract.js | Client-side processing | No data uploaded to servers</div>
+            <div>Vertil Extract Frontend IMG v1.0 | Powered by Tesseract.js | Client-side processing only</div>
         </footer>
     </div>
 
@@ -432,15 +474,18 @@
         const clearBtn = document.getElementById('clearBtn');
         const resultText = document.getElementById('resultText');
         const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
         const dropArea = document.getElementById('dropArea');
         const languageSelect = document.getElementById('languageSelect');
         const progressContainer = document.getElementById('progressContainer');
         const progressText = document.getElementById('progressText');
         const progressFill = document.getElementById('progressFill');
+        const fileNameDisplay = document.getElementById('fileName');
         
         // Variables de estado
         let currentImage = null;
         let extractedText = '';
+        let currentFileName = '';
         
         // Evento para seleccionar archivo
         fileInput.addEventListener('change', function(e) {
@@ -476,9 +521,12 @@
         // Función para cargar imagen
         function loadImage(file) {
             if (!file.type.match('image.*')) {
-                alert('Please select an image file (JPG, PNG, etc.)');
+                alert('Please select a valid image file (JPG, PNG, BMP, etc.)');
                 return;
             }
+            
+            currentFileName = file.name;
+            fileNameDisplay.textContent = `Selected: ${currentFileName}`;
             
             const reader = new FileReader();
             
@@ -504,6 +552,8 @@
             progressFill.style.width = '0%';
             progressText.textContent = 'Initializing OCR engine...';
             extractBtn.disabled = true;
+            copyBtn.disabled = true;
+            downloadBtn.disabled = true;
             
             try {
                 const language = languageSelect.value;
@@ -520,20 +570,29 @@
                             progressFill.style.width = `${percent}%`;
                             
                             if (progress.status === 'recognizing text') {
-                                progressText.textContent = `Recognizing text: ${percent}%`;
+                                progressText.textContent = `Recognizing text: ${percent}% complete`;
                             } else if (progress.status === 'loading language traineddata') {
                                 progressText.textContent = 'Loading language model...';
+                            } else if (progress.status === 'initializing api') {
+                                progressText.textContent = 'Initializing OCR engine...';
                             }
                         }
                     }
                 );
                 
                 progressFill.style.width = '100%';
-                progressText.textContent = 'Text extraction complete';
+                progressText.textContent = 'Text extraction completed successfully';
                 
                 extractedText = result.data.text;
-                resultText.textContent = extractedText || 'No text detected in the image';
-                copyBtn.disabled = !extractedText.trim();
+                if (extractedText.trim()) {
+                    resultText.textContent = extractedText;
+                    copyBtn.disabled = false;
+                    downloadBtn.disabled = false;
+                } else {
+                    resultText.textContent = 'No text was detected in the image. Please try another image with clearer text.';
+                    copyBtn.disabled = true;
+                    downloadBtn.disabled = true;
+                }
                 
                 setTimeout(() => {
                     progressContainer.style.display = 'none';
@@ -541,8 +600,8 @@
                 }, 1500);
                 
             } catch (error) {
-                console.error('OCR Error:', error);
-                resultText.textContent = 'Error processing image. Try another image or check readability.';
+                console.error('OCR Processing Error:', error);
+                resultText.textContent = 'Error processing the image. Please ensure the image is clear and contains readable text, then try again.';
                 progressContainer.style.display = 'none';
                 extractBtn.disabled = false;
             }
@@ -554,11 +613,14 @@
             imagePreview.src = '';
             imagePreview.style.display = 'none';
             placeholderText.style.display = 'block';
-            resultText.textContent = 'Extracted text will appear here...';
+            resultText.textContent = 'Extracted text will appear here after processing the image.';
             extractedText = '';
             currentImage = null;
+            currentFileName = '';
+            fileNameDisplay.textContent = '';
             extractBtn.disabled = true;
             copyBtn.disabled = true;
+            downloadBtn.disabled = true;
             progressContainer.style.display = 'none';
         });
         
@@ -570,7 +632,7 @@
                 .then(() => {
                     const originalText = copyBtn.textContent;
                     copyBtn.textContent = 'Copied!';
-                    copyBtn.style.backgroundColor = '#1e7e34';
+                    copyBtn.style.backgroundColor = '#1b5e20';
                     
                     setTimeout(() => {
                         copyBtn.textContent = originalText;
@@ -579,6 +641,7 @@
                 })
                 .catch(err => {
                     console.error('Copy error:', err);
+                    // Fallback para navegadores más antiguos
                     const textArea = document.createElement('textarea');
                     textArea.value = extractedText;
                     document.body.appendChild(textArea);
@@ -592,6 +655,34 @@
                         copyBtn.textContent = originalText;
                     }, 2000);
                 });
+        });
+        
+        // Evento para descargar texto
+        downloadBtn.addEventListener('click', function() {
+            if (!extractedText.trim()) return;
+            
+            const blob = new Blob([extractedText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            
+            const baseName = currentFileName ? currentFileName.replace(/\.[^/.]+$/, "") : 'extracted_text';
+            a.href = url;
+            a.download = `${baseName}_extracted.txt`;
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Feedback visual
+            const originalText = downloadBtn.textContent;
+            downloadBtn.textContent = 'Downloaded!';
+            downloadBtn.style.backgroundColor = '#0d47a1';
+            
+            setTimeout(() => {
+                downloadBtn.textContent = originalText;
+                downloadBtn.style.backgroundColor = '';
+            }, 2000);
         });
     </script>
 </body>
