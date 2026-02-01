@@ -541,8 +541,8 @@
             reader.readAsDataURL(file);
         }
         
-        // Evento para extraer texto
-        extractBtn.addEventListener('click', async function() {
+        // Evento para extraer texto - VERSIÓN CORREGIDA
+        extractBtn.addEventListener('click', function() {
             if (!currentImage) {
                 alert('Please select an image first');
                 return;
@@ -555,31 +555,30 @@
             copyBtn.disabled = true;
             downloadBtn.disabled = true;
             
-            try {
-                const language = languageSelect.value;
-                
-                progressFill.style.width = '30%';
-                progressText.textContent = 'Loading language model...';
-                
-                const result = await Tesseract.recognize(
-                    currentImage,
-                    language,
-                    {
-                        logger: progress => {
-                            const percent = Math.min(95, Math.round(progress.progress * 100));
-                            progressFill.style.width = `${percent}%`;
-                            
-                            if (progress.status === 'recognizing text') {
-                                progressText.textContent = `Recognizing text: ${percent}% complete`;
-                            } else if (progress.status === 'loading language traineddata') {
-                                progressText.textContent = 'Loading language model...';
-                            } else if (progress.status === 'initializing api') {
-                                progressText.textContent = 'Initializing OCR engine...';
-                            }
+            // Usar Tesseract.recognize directamente
+            const language = languageSelect.value;
+            
+            Tesseract.recognize(
+                currentImage,
+                language,
+                {
+                    logger: function(progress) {
+                        const percent = Math.min(95, Math.round(progress.progress * 100));
+                        progressFill.style.width = `${percent}%`;
+                        
+                        if (progress.status === 'recognizing text') {
+                            progressText.textContent = `Recognizing text: ${percent}% complete`;
+                        } else if (progress.status === 'loading language traineddata') {
+                            progressText.textContent = 'Loading language model...';
+                        } else if (progress.status === 'initializing api') {
+                            progressText.textContent = 'Initializing OCR engine...';
+                        } else {
+                            progressText.textContent = `Processing: ${progress.status}`;
                         }
                     }
-                );
-                
+                }
+            )
+            .then(function(result) {
                 progressFill.style.width = '100%';
                 progressText.textContent = 'Text extraction completed successfully';
                 
@@ -594,17 +593,22 @@
                     downloadBtn.disabled = true;
                 }
                 
-                setTimeout(() => {
+                setTimeout(function() {
                     progressContainer.style.display = 'none';
                     extractBtn.disabled = false;
                 }, 1500);
-                
-            } catch (error) {
+            })
+            .catch(function(error) {
                 console.error('OCR Processing Error:', error);
                 resultText.textContent = 'Error processing the image. Please ensure the image is clear and contains readable text, then try again.';
                 progressContainer.style.display = 'none';
                 extractBtn.disabled = false;
-            }
+                
+                // Mostrar más detalles del error en consola
+                if (error.message) {
+                    console.error('Error details:', error.message);
+                }
+            });
         });
         
         // Evento para limpiar todo
@@ -629,17 +633,17 @@
             if (!extractedText.trim()) return;
             
             navigator.clipboard.writeText(extractedText)
-                .then(() => {
+                .then(function() {
                     const originalText = copyBtn.textContent;
                     copyBtn.textContent = 'Copied!';
                     copyBtn.style.backgroundColor = '#1b5e20';
                     
-                    setTimeout(() => {
+                    setTimeout(function() {
                         copyBtn.textContent = originalText;
                         copyBtn.style.backgroundColor = '';
                     }, 2000);
                 })
-                .catch(err => {
+                .catch(function(err) {
                     console.error('Copy error:', err);
                     // Fallback para navegadores más antiguos
                     const textArea = document.createElement('textarea');
@@ -651,7 +655,7 @@
                     
                     const originalText = copyBtn.textContent;
                     copyBtn.textContent = 'Copied!';
-                    setTimeout(() => {
+                    setTimeout(function() {
                         copyBtn.textContent = originalText;
                     }, 2000);
                 });
@@ -679,7 +683,7 @@
             downloadBtn.textContent = 'Downloaded!';
             downloadBtn.style.backgroundColor = '#0d47a1';
             
-            setTimeout(() => {
+            setTimeout(function() {
                 downloadBtn.textContent = originalText;
                 downloadBtn.style.backgroundColor = '';
             }, 2000);
